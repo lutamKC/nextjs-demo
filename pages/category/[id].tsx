@@ -4,22 +4,12 @@ import {useEffect, useState} from "react";
 import {getCatsByCategoryId, getCatsCategories, setCatAsFavourite} from "../../src/services/api.service";
 import Image from 'next/image';
 import {useRouter} from 'next/router'
+import {InferGetStaticPropsType} from 'next';
 
-const CategoryPage: NextPage = () => {
+const CategoryPage = ({cats} : {cats: any[]}) => {
 
-    const [cats, setCats] = useState<Array<any>>([]);
     const router = useRouter();
     const {id} = router.query;
-
-
-    useEffect(() => {
-            if (id !== undefined && typeof id === "string") {
-                getCatsByCategoryId(id)
-                    .then(data => setCats(data));
-            }
-        }, []
-    )
-
 
     return (
         <>
@@ -41,7 +31,7 @@ const CategoryPage: NextPage = () => {
                         height={300}
                         layout='responsive'
                     />
-                    <button />
+                    <button/>
 
                 </div>
             ))}
@@ -49,13 +39,16 @@ const CategoryPage: NextPage = () => {
     )
 }
 
-export async function getStaticProps() {
+export async function getStaticProps({params} : {params: {id: string}}) {
+    const {id} = params;
+    const cats = await getCatsByCategoryId(id);
     return {
-        props: {},
+        props: {cats},
     }
 }
 
 export async function getStaticPaths() {
+
     const paths = await getCatsCategories();
     return {
         paths,
