@@ -2,7 +2,7 @@ import type {NextPage} from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 import {useEffect, useState} from "react";
-import {getCatsCategories} from '../src/services/api.service';
+import {getCatsByCategoryId, getCatsCategories} from '../src/services/api.service';
 
 const HomePage: NextPage = () => {
 
@@ -12,8 +12,21 @@ const HomePage: NextPage = () => {
     useEffect(() => {
         getCatsCategories()
             .then(data => setCategories(data));
-    }, [])
+    }, []);
 
+    /*
+    useEffect(() => {
+        let result: any;
+        categories.forEach(ct => {
+            getCatsByCategoryId(ct.params.id).then(v => {
+                result = {...result, [ct.params.id]: v.map(k => k.id)};
+                console.log(result)
+
+            })
+
+        })
+    }, [categories])
+*/
 
     return (
         <>
