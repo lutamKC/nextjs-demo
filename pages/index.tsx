@@ -6,10 +6,10 @@ import {getCatsCategories} from '../src/services/api.service';
 
 const HomePage: NextPage = () => {
 
-    const [categories, setCategories] = useState<Array<{ params: {id: string }}>>([]);
+    const [categories, setCategories] = useState<Array<{ params: { id: string } }>>([]);
 
 
-    useEffect( async () => {
+    useEffect(() => {
         getCatsCategories()
             .then(data => setCategories(data));
     }, [])
