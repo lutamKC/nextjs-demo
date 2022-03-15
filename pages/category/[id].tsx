@@ -49,9 +49,9 @@ const CategoryPage: NextPage = () => {
     )
 }
 
-export async function getStaticProps(context) {
+export async function getStaticProps() {
     return {
-        props: {}, // will be passed to the page component as props
+        props: {},
     }
 }
 
@@ -59,7 +59,7 @@ export async function getStaticPaths() {
     const paths = await getCatsCategories();
     return {
         paths,
-        fallback: true // false or 'blocking'
+        fallback: true
     };
 }
 
