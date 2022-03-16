@@ -4,21 +4,22 @@ import {useEffect, useState} from "react";
 import {getCatsFavourite, removeCatAsFavourite, setCatAsFavourite} from "../../src/services/api.service";
 import Image from 'next/image';
 
-const FavouritesPage: NextPage = () => {
+const FavouritesPage = ({favourites} : {favourites: any[]}) => {
 
-    const [favourites, setFavourites] = useState<Array<any>>([]);
+    const [myCats, setMyCats] = useState<Array<any>>(favourites);
 
     const removeCat = (catId: string) => {
-        setFavourites(favourites.filter(fv => fv.id !== catId))
+        setMyCats(myCats.filter(fv => fv.id !== catId))
         removeCatAsFavourite(catId);
     }
+    /*
     useEffect(() => {
         getCatsFavourite().then((favouriteCatsData: any) => {
             setFavourites(favouriteCatsData);
         });
     }, []);
 
-
+    */
 
     return (
         <>
@@ -27,8 +28,8 @@ const FavouritesPage: NextPage = () => {
                 <link rel="icon" href="/favicon.png"/>
             </Head>
 
-            <p className='main--p'> {(favourites||[]).length} favourite cats </p>
-            {(favourites||[]).map(cat => (
+            <p className='main--p'> {(myCats||[]).length} favourite cats </p>
+            {(myCats||[]).map(cat => (
                 <div className='main--box main--image active'
                      onClick={() => removeCat(cat.id)}
                      key={cat.id}>
@@ -46,5 +47,15 @@ const FavouritesPage: NextPage = () => {
         </>
     )
 }
+
+export async function getServerSideProps() {
+
+    const favourites = await getCatsFavourite();
+
+    return {
+        props: {favourites},
+    }
+}
+
 
 export default FavouritesPage;
